@@ -47,6 +47,9 @@
               </td>
               <td id="cp_total_{{$product->id}}" class="cp-total">€{{ number_format($product->product_price, 2) }}</td> 
             </tr> 
+
+     
+             
           @endforeach   
   
         </tbody>
@@ -60,21 +63,21 @@
 
         <div class="amount-couple">
              <h1>Delivery Fees</h1>   
-             <p>$4.00</p>
+             <p id="deli_fee_txt">€4.00</p>
         </div>
 
         <div class="amount-couple">
              <h1>Taxes</h1>  
-              <p>$2.00</p>
+              <p id="tax_txt">€2.00</p>
         </div>
 
-        <div class="amount-couple">
+        <div class="amount-couple"> 
              <h1>Total Amount</h1>   
-             <p>$18.00</p>
+             <p id="order_total_txt">$18.00</p>
         </div>
 
         <button class="check-out-btn">Check Out!</button>
-    </div> 
+    </div>  
     
     <div class="check-out" id="checkoutbox"> 
         <h2>Check Out</h2>
@@ -181,12 +184,16 @@
         
             checkoutBox.style.display = "none";  
             ordersumBox.style.display = "flex";  
+
+          
         });
 
 
-
+ 
         //Cart Quantity and Sum Logics
         //--------------------------------------------------------------------------------------------------------------------------
+        let products_total = 0;
+
         function quantity_change(product_id){
 
             let price_txt = document.getElementById('cp_price_' + product_id);
@@ -198,9 +205,37 @@
                
             let total = 0; 
             total = price * quantity_value; 
-            console.log(total);
-            total_txt.innerText = '€' + total.toFixed(2);
-        }  
+            console.log(total); 
+            total_txt.innerText = '€' + total.toFixed(2); 
+
+            //update the order summary total 
+            calculate_products_total();
+        }   
+
+        function calculate_products_total(){
+            products_total = 0;
+            let each_total_txt = document.querySelectorAll('.cp-total');
+            each_total_txt.forEach(total_txt => { 
+                let ep_total = parseFloat(total_txt.innerText.replace('€', '')) || 0;
+                products_total += ep_total;
+            }); 
+
+            calculate_order_summary();
+        }
+
+        function calculate_order_summary(){
+           
+            let tax_txt = document.getElementById('tax_txt');
+            let deli_txt = document.getElementById('deli_fee_txt');
+            let all_total = document.getElementById('order_total_txt'); 
+            
+            let delivery_fees = parseFloat(deli_txt.innerText.replace('€', '')) || 0;
+            let taxes = parseFloat(tax_txt.innerText.replace('€', '')) || 0;   
+
+            let order_total = products_total + delivery_fees + taxes; 
+            all_total.innerText = '€' + order_total.toFixed(2);    
+        }   
+ 
     </script> 
 
-@endsection  
+@endsection    
