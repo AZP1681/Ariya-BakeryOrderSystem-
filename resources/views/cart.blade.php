@@ -19,7 +19,7 @@
     <h3>Order Cart</h3> 
     <div class="cart-color-box"></div>
  </div> 
-
+ 
  <div class="scrollable-table">
     <table class="cart-table">
         <thead> 
@@ -40,20 +40,20 @@
                     <img src="{{$product->product_img_link}}" alt="">
                   </div>
               </td> 
-              <td class="cp-name">{{ $product->product_name }}</td>
-              <td class="cp-price">€{{ number_format($product->product_price, 2) }}</td>
+              <td class="cp-name" id="cp_name_{{$product->id}}">{{ $product->product_name }}</td>
+              <td class="cp-price" id="cp_price_{{$product->id}}">€{{ number_format($product->product_price, 2) }}</td>
               <td>
-                  <input type="number" name="quantity" class="quantity-input" value="1">
+                  <input id="cp_quantity_input_{{$product->id}}" type="number" name="quantity" class="quantity-input" value="1" onchange="quantity_change({{$product->id}})">
               </td>
-              <td class="cp-total"></td>
+              <td id="cp_total_{{$product->id}}" class="cp-total">€{{ number_format($product->product_price, 2) }}</td> 
             </tr> 
-          @endforeach 
- 
+          @endforeach   
+  
         </tbody>
     </table>  
  </div>  
 
-<div class="RightBoxes-Con">
+<div class="RightBoxes-Con"> 
 
     <div class="order-summary" id="ordersumbox"> 
         <h2>Order Summary</h2>
@@ -167,30 +167,40 @@
             });
         } 
 
-
         document.addEventListener('DOMContentLoaded', () => {
           
           const cardInputs = document.querySelectorAll('.card-num-input, .expire-date-input, .name-on-card-input');
           let cod_radio = document.getElementById('cod');
           cod_radio.checked = true;
-          cardInputs.forEach(input => {
+          cardInputs.forEach(input => { 
             input.style.display = "none";
-          });
+          }); 
 
           let checkoutBox = document.getElementById("checkoutbox"); 
-          let ordersumBox = document.getElementById("ordersumbox");
+          let ordersumBox = document.getElementById("ordersumbox"); 
         
             checkoutBox.style.display = "none";  
-            ordersumBox.style.display = "flex";
-
-
-
-          
-
-
+            ordersumBox.style.display = "flex";  
         });
 
 
-    </script>
 
-@endsection
+        //Cart Quantity and Sum Logics
+        //--------------------------------------------------------------------------------------------------------------------------
+        function quantity_change(product_id){
+
+            let price_txt = document.getElementById('cp_price_' + product_id);
+            let total_txt = document.getElementById('cp_total_' + product_id);
+            let quantity_input = document.getElementById('cp_quantity_input_' + product_id);
+      
+            let price = parseFloat(price_txt.innerText.replace('€', ''));
+            let quantity_value = parseInt(quantity_input.value, 10);
+               
+            let total = 0; 
+            total = price * quantity_value; 
+            console.log(total);
+            total_txt.innerText = '€' + total.toFixed(2);
+        }  
+    </script> 
+
+@endsection  
