@@ -43,13 +43,10 @@
               <td class="cp-name" id="cp_name_{{$product->id}}">{{ $product->product_name }}</td>
               <td class="cp-price" id="cp_price_{{$product->id}}">€{{ number_format($product->product_price, 2) }}</td>
               <td>
-                  <input id="cp_quantity_input_{{$product->id}}" type="number" name="quantity" class="quantity-input" value="1" onchange="quantity_change({{$product->id}})">
-              </td>
-              <td id="cp_total_{{$product->id}}" class="cp-total">€{{ number_format($product->product_price, 2) }}</td> 
+                  <input id="cp_quantity_input_{{$product->id}}" type="number" name="quantity" class="quantity-input" value="{{session('cart')[$product->id] ?? 1}}"  onchange="quantity_change({{$product->id}}) ">
+              </td> 
+              <td id="cp_total_{{$product->id}}" class="cp-total">calculate_each_product_total_with_id_forstart({{$product->id}})</td> 
             </tr> 
-
-     
-             
           @endforeach   
   
         </tbody>
@@ -68,12 +65,12 @@
 
         <div class="amount-couple">
              <h1>Taxes</h1>  
-              <p id="tax_txt">€2.00</p>
+              <p id="tax_txt">€1.20</p>
         </div>
 
         <div class="amount-couple"> 
              <h1>Total Amount</h1>   
-             <p id="order_total_txt">$18.00</p>
+             <p id="order_total_txt">$0</p>
         </div>
 
         <button class="check-out-btn">Check Out!</button>
@@ -184,14 +181,18 @@
         
             checkoutBox.style.display = "none";  
             ordersumBox.style.display = "flex";  
-
+          
+          //twat total and order sum on start
+          @foreach ($products as $product)
+          quantity_change({{$product->id}});
+          @endforeach 
           
         });
 
 
  
         //Cart Quantity and Sum Logics
-        //--------------------------------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------------
         let products_total = 0;
 
         function quantity_change(product_id){
@@ -202,13 +203,22 @@
       
             let price = parseFloat(price_txt.innerText.replace('€', ''));
             let quantity_value = parseInt(quantity_input.value, 10);
+
+            if (quantity_value < 1) {
+                alert("Quantity must be at least 1");
+                this.value = 1;
+                quantity_value = 1; 
+            }
                
             let total = 0; 
             total = price * quantity_value; 
             console.log(total); 
             total_txt.innerText = '€' + total.toFixed(2); 
 
-            //update the order summary total 
+            //BE laravel storage update
+            updateQuantity(product_id, quantity_value); 
+
+            //update the order summary total  
             calculate_products_total();
         }   
 
@@ -219,7 +229,8 @@
                 let ep_total = parseFloat(total_txt.innerText.replace('€', '')) || 0;
                 products_total += ep_total;
             }); 
-
+            
+            
             calculate_order_summary();
         }
 
@@ -234,7 +245,26 @@
 
             let order_total = products_total + delivery_fees + taxes; 
             all_total.innerText = '€' + order_total.toFixed(2);    
-        }   
+        }
+        
+        function updateQuantity(product_id, quantity) {
+        fetch('/cart/update-quantity', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                product_id: product_id,
+                quantity: quantity
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Quantity Updated:", data.cart);
+        })
+        .catch(error => console.error('Error:', error));
+    }
  
     </script> 
 

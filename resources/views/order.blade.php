@@ -165,7 +165,17 @@
 
     //Add To Cart 
     function addToCart(the_id) {
-        
+
+        let cart = JSON.parse(sessionStorage.getItem('session_cart')) || [];
+        let product = cart.find(item => item.product_id === the_id);
+    
+        if (product) {
+            product.quantity += 1;  
+        } else {
+            cart.push({ product_id: the_id, quantity: 1 });
+        }
+        sessionStorage.setItem('session_cart', JSON.stringify(cart));
+
         fetch('/add-to-cart', {
             method: 'POST',
             headers: {
@@ -173,7 +183,8 @@
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body: JSON.stringify({
-                product_id: the_id
+                product_id: the_id,
+                quantity: product ? product.quantity : 1  
             })
         })
         .then(response => response.json())
@@ -181,7 +192,7 @@
             console.log("Cart Updated:", data.cart);
         })
         .catch(error => console.error('Error:', error));
-    } 
+    }   
 
  
 </script>

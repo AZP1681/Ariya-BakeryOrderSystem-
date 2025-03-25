@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
-
+ 
 Route::get('/', function () {
     return view('home');  
 })->name('home');
@@ -18,8 +18,9 @@ Route::get('/about', function () {
 })->name('about');
 
 Route::get('/contact', function () {
-    return view('contact');  
+    return view('contact');   
 })->name('contact');
 Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
-Route::post('/add-to-cart', [CartController::class, 'addToCart']);
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity'); 
   
