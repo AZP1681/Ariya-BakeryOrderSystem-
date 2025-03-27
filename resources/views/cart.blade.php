@@ -33,7 +33,7 @@
         </thead>
         <tbody>
 
-          @foreach ($products as $product)
+          @foreach ($products as $product) 
             <tr>
               <td class="cp-img">  
                   <div class="cp-img-container">
@@ -45,7 +45,7 @@
               <td>
                   <input id="cp_quantity_input_{{$product->id}}" type="number" name="quantity" class="quantity-input" value="{{session('cart')[$product->id] ?? 1}}"  onchange="quantity_change({{$product->id}}) ">
               </td> 
-              <td id="cp_total_{{$product->id}}" class="cp-total">calculate_each_product_total_with_id_forstart({{$product->id}})</td> 
+              <td id="cp_total_{{$product->id}}" class="cp-total"></td> 
             </tr> 
           @endforeach   
   
@@ -105,10 +105,10 @@
          <input type="text" name="name-on-card" class="name-on-card-input" id="creditpay-object" placeholder="Name on Card">
       
          <div class="co-btn-container">
-            <button class="back-to-ordersum-btn">&#x21e0;</button>
-            <button class="send-order-btn">Send Order</button>
+            <button class="back-to-ordersum-btn">&#x21e0;</button> 
+            <button class="send-order-btn" onclick="sendOrder()" >Send Order</button>
          </div>
-    </div>
+    </div> 
     
     
 </div>
@@ -132,7 +132,7 @@
             let ordersumBox = document.getElementById("ordersumbox");
         
             checkoutBox.style.display = "none";
-            ordersumBox.style.display = "flex";
+            ordersumBox.style.display = "flex"; 
         }
 
         document.querySelector(".check-out-btn").addEventListener("click", showCheckout);
@@ -255,7 +255,7 @@
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body: JSON.stringify({
-                product_id: product_id,
+                product_id: product_id, 
                 quantity: quantity
             })
         })
@@ -265,7 +265,62 @@
         })
         .catch(error => console.error('Error:', error));
     }
- 
+
+
+    //Sending order data to the server
+    function sendOrder(){
+        
+        let name = document.querySelector('.name-input').value;
+        let phone = document.querySelector('.phone-input').value;
+        let address = document.querySelector('.address-input').value;
+        let district = document.querySelector('.district-input').value;
+        let card_num = document.querySelector('.card-num-input').value;
+        let expiration_date = document.querySelector('.expire-date-input').value;
+        let name_on_card = document.querySelector('.name-on-card-input').value; 
+
+        let order_total = document.getElementById('order_total_txt').innerText;
+        order_total = parseFloat(order_total.replace('€', '').trim());
+
+
+        let pay_m = document.getElementById("credit").checked ? 1 : 0;
+
+        if(name == "" || phone == "" || address == "" || district == ""){
+            alert("Please fill all the fields");
+            return;
+        } 
+
+        if(pay_m == 1){
+            if(card_num == "" || expiration_date == "" || name_on_card == ""){
+                alert("Please fill all the fields");
+                return;
+            }
+        }  
+        fetch('/insert-order', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                name: name,
+                phone: phone,
+                address: address,
+                district: district, 
+                total_amount: order_total, 
+                pay_method: pay_m,
+                card_num: card_num, 
+                expire_date: expiration_date, 
+                card_name: name_on_card, 
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Order Sent:");
+            alert("The Order has been sent to the database with name " + name + " and total amount of " + order_total + ". Please note that this is not a real cafe, but rather a demo project. Thank you for your testing.");
+        })
+        .catch(error => console.error('Error:', error)); 
+    }
+         
     </script> 
 
 @endsection    

@@ -27,37 +27,41 @@
         from 9:00 AM to 4:00 PM. 
     </h1>
  </div>
-
+ 
  
 <div class="product-nav-container">
-
+  
     <div class="productnav">
 
         <div class="search-container">
              
             <img class="search-icon" src="/Images/search-solid.svg" alt="Icon description"></i>
-            <input placeholder='Search...' class='product-search' type="text">
-             
+            <form action="{{ route('order.search') }}" method="GET">
+                <input placeholder="Search..." class="product-search" type="text" name="search" value="{{ request('search') }}" onkeydown="if(event.key === 'Enter') this.form.submit();">
+            </form>
+               
         </div>
-
  
-        <select class="types-dropdown" name="types-dropdown" id="types">
-            <option value="all">All</option>
-            <option value="breads">Breads</option> 
-            <option value="cakes">Cakes</option>
-            <option value="pastry">Pastries</option>
-            <option value="drinks">Drinks</option> 
-          
-        </select>
+        <form action="{{ route('order.category') }}" method="GET" id="category-form">
+            <select class="types-dropdown" name="type" id="types" onchange="this.form.submit()">
+                <option value="all" {{ request('type') == 'all' ? 'selected' : '' }}>All</option>
+                <option value="breads" {{ request('type') == 'breads' ? 'selected' : '' }}>Breads</option>
+                <option value="cakes" {{ request('type') == 'cakes' ? 'selected' : '' }}>Cakes</option>
+                <option value="pastries" {{ request('type') == 'pastries' ? 'selected' : '' }}>Pastries</option>
+                <option value="drinks" {{ request('type') == 'drinks' ? 'selected' : '' }}>Drinks</option>
+            </select>
+        </form>
 
-    </div> 
+    </div>  
 
 </div>
 
 
   <div class="product-parent">
     <div class="products-container">   
-    
+
+    @if(isset($products) && count($products) > 0)
+        
         @foreach($products as $product) 
  
         <div class="product-box" onclick="open_product_card('{{ $product->product_name }}', '{{ $product->product_desc }}', '{{ $product->product_img_link }}', '€{{ number_format($product->product_price, 2) }}', '{{ $product->id }}')"> 
@@ -75,7 +79,11 @@
         </div>    
 
         @endforeach
-            
+
+    @else
+        <p>No products found.</p>
+    @endif
+
      </div> 
   </div>
 
@@ -162,7 +170,7 @@
 
 
  
-
+ 
     //Add To Cart 
     function addToCart(the_id) {
 
@@ -171,7 +179,7 @@
     
         if (product) {
             product.quantity += 1;  
-        } else {
+        } else {  
             cart.push({ product_id: the_id, quantity: 1 });
         }
         sessionStorage.setItem('session_cart', JSON.stringify(cart));
@@ -188,12 +196,13 @@
             })
         })
         .then(response => response.json())
-        .then(data => {
+        .then(data => { 
             console.log("Cart Updated:", data.cart);
-        })
+            alert("Added to cart!");
+            close_product_card(); })
         .catch(error => console.error('Error:', error));
     }   
 
  
-</script>
+</script> 
 @endsection 

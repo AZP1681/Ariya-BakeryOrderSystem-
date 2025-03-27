@@ -11,16 +11,15 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
-        
+         
         $request->validate([
             'product_id' => 'required|exists:products,id', 
             'quantity' => 'required|integer|min:1',
         ]); 
-
-      
+ 
         $cart = session('cart', []);
 
-        $product_id = $request->input('product_id');
+        $product_id = $request->input('product_id'); 
         $quantity = $request->input('quantity');
 
         if (isset($cart[$product_id])) {
@@ -50,7 +49,7 @@ class CartController extends Controller
         $product_id = $request->input('product_id');
         $quantity = $request->input('quantity');
 
-        if (isset($cart[$product_id])) {
+        if (isset($cart[$product_id])) { 
             $cart[$product_id] = $quantity;  
         }
 
@@ -66,7 +65,7 @@ class CartController extends Controller
 
     public function showCart(Request $request)
     {
-        $cart = session('cart', []); 
+        $cart = session('cart', []);  
 
         $product_ids = array_keys($cart); 
     
@@ -75,4 +74,8 @@ class CartController extends Controller
         return view('cart', compact('products', 'cart'));  
 
     }
+ 
+
+  
 }
+  
