@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController; 
- 
+
+use App\Http\Controllers\AdminController;
+  
 Route::get('/', function () { 
     return view('home');  
 })->name('home');
@@ -27,4 +29,18 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.ad
 Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity'); 
 Route::post('/insert-order', [OrderController::class, 'InsertOrder'])->name('insert.order'); 
   
+// Admin Routes
+Route::prefix('admin')->group(function () {
+    Route::get('/', function () {
+        return view('admin_products');
+    })->name('admin.index');
+
+    Route::get('/orders', function () {
+        return view('admin_order');  // Returns the Blade view
+    })->name('admin.orders.view');
+ 
+    // Route for AJAX polling (returns JSON)
+    Route::get('/orders/data', [AdminController::class, 'fetch_orders_ajax'])->name('admin.orders.fetch');
+});
+
     

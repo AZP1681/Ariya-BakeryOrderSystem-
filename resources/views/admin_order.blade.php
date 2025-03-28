@@ -1,0 +1,86 @@
+@extends('layouts.app') 
+
+@section('title', 'Orders')  
+@section('body-class', 'adm-order-body')  
+
+
+@section('content')  <!-- The content section -->
+
+<div class="page">
+    <header tabindex="0">Ariya's Admin Panel</header>
+    <div id="nav-container">
+      <div class="bg"></div>
+      <div class="button" tabindex="0">
+        <span class="icon-bar"></span> 
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </div> 
+      <div id="nav-content" tabindex="0">
+        <ul>
+          <li><a href="#0">Products</a></li>
+          <li><a href="#0">Orders</a></li>
+          <li><a href="#0">Customers</a></li>
+          <li><a href="#0">Reviews</a></li>
+          <li class="small"><a href="#0">Facebook</a><a href="#0">Instagram</a></li>
+        </ul> 
+      </div> 
+    </div>  
+  
+    <main>
+      <div class="content">
+        <div class="ao_table">
+        <h1>Orders</h1>
+          <table class="table table-striped table-bordered" id="orders-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Phone</th> 
+                <th>Address</th> 
+                <th>Total Amount</th> 
+              </tr>
+            </thead>
+            <tbody id="orders-table-body">
+              <!-- Orders will be populated here by JavaScript -->
+
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main> 
+  </div>
+  
+
+@endsection  <!-- End content section -->  
+
+@section('scripts') 
+<script>
+   window.onload = function() {
+    fetchOrders();} 
+
+
+    function fetchOrders() {
+      fetch("{{ route('admin.orders.fetch') }}")
+        .then(response => response.json())
+        .then(data => {
+            let tableBody = document.getElementById("orders-table-body");
+            tableBody.innerHTML = ""; 
+            data.forEach(order => {
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${order.id}</td>
+                        <td>${order.name}</td>
+                        <td>${order.phone}</td>
+                        <td>${order.address}</td>
+                        <td>${order.total_amount}</td>
+                    </tr> 
+                `;
+            });
+        }); 
+    }
+
+    setInterval(fetchOrders, 5000); // Refresh every 20 seconds
+</script>
+
+@endsection    

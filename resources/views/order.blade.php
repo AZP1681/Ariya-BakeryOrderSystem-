@@ -84,6 +84,7 @@
         <p>No products found.</p>
     @endif
 
+    
      </div> 
   </div>
 
