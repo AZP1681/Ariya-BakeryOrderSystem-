@@ -1088,13 +1088,15 @@
 .products-container {
     grid-area: product-view;
     width: 90vw; 
+    min-height: 80vh; 
       
     position: relative;
 
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     padding: 12px 0px; 
-    align-items: start;
+    align-items: center; /* Center items vertically */
+    align-content: center; 
     column-gap: 0.8%; 
     row-gap: 50px; 
     margin: 0 auto;
@@ -1283,7 +1285,7 @@
 /*-----------------------------*/
 .cart-body {
     width: 100vw;
-    min-height: 100vh;
+    min-height: 100vh; 
     display: grid;
     grid-template-columns: auto auto; 
     grid-template-rows: auto 1fr; 

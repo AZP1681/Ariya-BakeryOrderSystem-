@@ -38,9 +38,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/orders', function () {
         return view('admin_order');  // Returns the Blade view
     })->name('admin.orders.view');
+
+    Route::post('/order-detail-fetch', [AdminController::class, 'fetch_order_detail'])->name('order_detail_fetch');
+    Route::get('/order-detail', [AdminController::class, 'show_order_detail_page'])->name('order_detail_page');
+
+
  
     // Route for AJAX polling (returns JSON)
     Route::get('/orders/data', [AdminController::class, 'fetch_orders_ajax'])->name('admin.orders.fetch');
 });
-
-    

@@ -1,8 +1,11 @@
 @extends('layouts.app') 
 
 @section('title', 'Orders')  
-@section('body-class', 'adm-order-body')  
+@section('body-class', 'adm-order-body')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/Ad_Style.css') }}">
+@endpush
 
 @section('content')  <!-- The content section -->
 
@@ -28,8 +31,8 @@
   
     <main>
       <div class="content">
-        <div class="ao_table">
-        <h1>Orders</h1>
+        <div class="ao-table">
+        <h1>Arrived Orders</h1>
           <table class="table table-striped table-bordered" id="orders-table">
             <thead>
               <tr>
@@ -68,19 +71,42 @@
             tableBody.innerHTML = ""; 
             data.forEach(order => {
                 tableBody.innerHTML += `
-                    <tr>
+                  <tr class="order-tr" onClick="fetchOrderDetail('${order.ordered_products}', '${order.ordered_quantity}')">
                         <td>${order.id}</td>
-                        <td>${order.name}</td>
+                        <td>${order.name}</td> 
                         <td>${order.phone}</td>
-                        <td>${order.address}</td>
+                        <td>${order.address}</td> 
                         <td>${order.total_amount}</td>
-                    </tr> 
+                  </tr> 
                 `;
             });
-        }); 
+        });  
     }
 
-    setInterval(fetchOrders, 5000); // Refresh every 20 seconds
+    setInterval(fetchOrders, 12000); // Refresh every 20 seconds
+
+
+    function fetchOrderDetail(orderedProducts, orderedQuantity) {
+
+      fetch("{{ route('order_detail_fetch') }}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Laravel CSRF token
+        },
+        body: JSON.stringify({
+            ordered_products: orderedProducts, 
+            ordered_quantity: orderedQuantity,
+        })
+      })
+      .then(response => response.json())  
+      .then(data => {
+        window.location.href = "{{ route('order_detail_page') }}"; 
+      })
+      .catch(error => console.error("Error fetching order details:", error));
+
+    }
+
 </script>
 
 @endsection    
