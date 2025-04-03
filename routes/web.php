@@ -31,19 +31,22 @@ Route::post('/insert-order', [OrderController::class, 'InsertOrder'])->name('ins
   
 // Admin Routes
 Route::prefix('admin')->group(function () {
-    Route::get('/', function () {
-        return view('admin_products');
-    })->name('admin.index');
 
     Route::get('/orders', function () {
-        return view('admin_order');  // Returns the Blade view
+        return view('admin_order');   
     })->name('admin.orders.view');
+
+    Route::get('/products', function () {
+        return view('admin_product'); 
+    })->name('admin.products.view'); 
 
     Route::post('/order-detail-fetch', [AdminController::class, 'fetch_order_detail'])->name('order_detail_fetch');
     Route::get('/order-detail', [AdminController::class, 'show_order_detail_page'])->name('order_detail_page');
-
-
+    Route::post('/order-detail-delete', [AdminController::class, 'delete_order'])->name('order_detail_delete');
+     
  
     // Route for AJAX polling (returns JSON)
     Route::get('/orders/data', [AdminController::class, 'fetch_orders_ajax'])->name('admin.orders.fetch');
+    Route::get('/products/data', [AdminController::class, 'fetch_products_ajax'])->name('admin.products.fetch'); 
 });
+ 

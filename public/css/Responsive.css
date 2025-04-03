@@ -22,13 +22,14 @@
 
 .order-navbar{ 
     width: clamp(150px,52vw,1900px);
-    height: 37px; 
+    height: 36px; 
+    border: 2px solid #FFA600;
   
-    gap: clamp(6px,8vw,80px);
+    gap: clamp(16px,10vw,80px);
 }
 
 .order-navbar a{
-    font-size: clamp(14px,3vw,5rem);
+    font-size: clamp(12px,2.5vw,5rem);
 } 
 
 
@@ -338,7 +339,7 @@
     grid-template-rows: auto 1fr auto;
 }
 .color-container{
-    height: 300px;  
+    height: 170px;  
 } 
 
 .color-container h3, .color-container h1, .color-container p{
@@ -347,15 +348,16 @@
 
 .color-container h3{
     font-family: "Bellota Text", sans-serif; 
-    font-size: clamp(40px,1vw, 90px);
+    font-size: clamp(30px,0.6vw, 90px);
     font-weight: 400;
-    margin-bottom: 60px;
+    margin-bottom: 36px;
 } 
 
 
  
 .color-container h1{ 
-    font-size: clamp(16px,1.92vw,80px);
+    font-size: clamp(12px,1.62vw,80px);
+    margin-bottom: -8px;
 }
 
 .products-container {
@@ -397,6 +399,31 @@
     font-size: clamp(14px,2vw,1.85rem);
 } 
 
+
+
+.product-search{
+    border-radius: 18px;
+    
+    width: clamp(120px,30vw,1000px);
+    height: clamp(35px,2.5vw,84px);
+    padding: 4px 12px 4px 50px; /* left padding to prevent overlap */
+ 
+    font-size: clamp(12px,4vw,2rem); 
+
+
+} 
+
+.product-search::placeholder {
+    font-size: clamp(12px,4vw,2rem); 
+}
+.types-dropdown {
+    
+    background-position: calc(100% - 82px) center;
+    background-size: 50px;
+ 
+    padding: 8px 15px 8px 33px; 
+
+}
 
 .product-card-wrapper {
     position: fixed; 
@@ -737,7 +764,7 @@
         min-height: 100vh;
         display: grid;
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto; 
+        grid-template-rows: 200px auto; 
         grid-template-areas: 
             "image-container" 
             "right-boxes"
@@ -772,7 +799,7 @@
     
     
     .cp-name{
-        font-size: clamp(10px,1vw,1.92rem);
+        font-size: clamp(13px,1vw,1.92rem);
         min-width: 60px;
 
     }
@@ -790,8 +817,8 @@
     }
     
     .quantity-input{
-        width: clamp(12px,1.4vw,32px);
-        font-size: clamp(17px,1.2vw,1.72rem);
+        width: clamp(14px,1.4vw,32px);
+        font-size: clamp(15px,1.2vw,1.72rem);
         padding: 10px 10px;
     } 
     
@@ -813,8 +840,10 @@
 
         padding: 18px 12px;  
         position: relative;
-        margin-left: 0px;
+        margin-left: 0px; 
         margin-right: 0px; 
+
+        margin-bottom: -200px;
     }
     .order-summary h2{
     
@@ -1315,22 +1344,22 @@
         grid-template-rows: auto 1fr auto;
     }
     .color-container{
-        height: 300px;  
+        height: 180px;  
     } 
     
     .color-container h3, .color-container h1, .color-container p{
-        bottom: 8%;
+        bottom: 7%;
     }
     
     .color-container h3{
         font-family: "Bellota Text", sans-serif; 
-        font-size: clamp(40px,1vw, 90px);
+        font-size: clamp(30px,1vw, 90px);
         font-weight: 400;
-        margin-bottom: 60px;
+        margin-bottom: 54px;
     } 
      
     .color-container h1{ 
-        font-size: clamp(16px,1.92vw,80px);
+        font-size: clamp(14px,1.92vw,80px);
     }
     
     .products-container {
@@ -1408,8 +1437,8 @@
     .product-search{
         border-radius: 18px;
         
-        width: clamp(100px,36vw,1000px);
-        height: clamp(36px,2.45vw,54px);
+        width: clamp(100px,34vw,1000px);
+        height: clamp(32px,2.25vw,54px);
         padding: 4px 12px 4px 50px; /* left padding to prevent overlap */
      
         font-size: clamp(14px,5.1vw,2rem); 
@@ -1423,8 +1452,9 @@
         
         background-position: calc(100% - 82px) center;
         background-size: 50px;
-     
-        padding: 8px 15px 8px 33px; 
+        font-size: clamp(20px,1.233vw,1.5rem); 
+        
+        padding: 8px 17px 8px 33px; 
 
     }
 

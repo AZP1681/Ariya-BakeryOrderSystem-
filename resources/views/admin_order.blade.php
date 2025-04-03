@@ -8,7 +8,7 @@
 @endpush
 
 @section('content')  <!-- The content section -->
-
+ 
 <div class="page">
     <header tabindex="0">Ariya's Admin Panel</header>
     <div id="nav-container">
@@ -21,7 +21,7 @@
       <div id="nav-content" tabindex="0">
         <ul>
           <li><a href="#0">Products</a></li>
-          <li><a href="#0">Orders</a></li>
+          <li><a href="{{ route('admin.orders.view') }}">Orders</a></li>
           <li><a href="#0">Customers</a></li>
           <li><a href="#0">Reviews</a></li>
           <li class="small"><a href="#0">Facebook</a><a href="#0">Instagram</a></li>
@@ -71,14 +71,14 @@
             tableBody.innerHTML = ""; 
             data.forEach(order => {
                 tableBody.innerHTML += `
-                  <tr class="order-tr" onClick="fetchOrderDetail('${order.ordered_products}', '${order.ordered_quantity}')">
+                  <tr class="order-tr" onClick="fetchOrderDetail('${order.ordered_products}', '${order.ordered_quantity}', '${order.id}')"> 
                         <td>${order.id}</td>
                         <td>${order.name}</td> 
                         <td>${order.phone}</td>
                         <td>${order.address}</td> 
                         <td>${order.total_amount}</td>
-                  </tr> 
-                `;
+                  </tr>  
+                `; 
             });
         });  
     }
@@ -86,7 +86,7 @@
     setInterval(fetchOrders, 12000); // Refresh every 20 seconds
 
 
-    function fetchOrderDetail(orderedProducts, orderedQuantity) {
+    function fetchOrderDetail(orderedProducts, orderedQuantity, orderId) {
 
       fetch("{{ route('order_detail_fetch') }}", {
         method: 'POST',
@@ -97,6 +97,7 @@
         body: JSON.stringify({
             ordered_products: orderedProducts, 
             ordered_quantity: orderedQuantity,
+            order_id: orderId
         })
       })
       .then(response => response.json())  

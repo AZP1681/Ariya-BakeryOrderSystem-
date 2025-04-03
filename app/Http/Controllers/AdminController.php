@@ -19,31 +19,38 @@ class AdminController extends Controller
         return response()->json($orders);
     } 
 
-
     public function fetch_order_detail(Request $request){
         $request->validate([
             'ordered_products' => 'required|string',
             'ordered_quantity' => 'required|string',
+            'order_id' => 'required|numeric',
         ]);
     
       $product_ids = explode(',', $request->input('ordered_products'));
       $quantities = explode(',', $request->input('ordered_quantity'));
-  
+      $the_id =  $request->input('order_id');
+
   
       $products = Product::whereIn('id', $product_ids)
-          ->select('id', 'product_name', 'product_price', 'product_img_link')
-          ->get();
+       ->select('id', 'product_name', 'product_price', 'product_img_link')
+       ->get()
+       ->keyBy('id'); // Ensure correct order
+
+    $ordered_items = [];
+    foreach ($product_ids as $index => $id) {
+        if (isset($products[$id])) {
+            $ordered_items[] = [
+                'product' => $products[$id],
+                'quantity' => isset($quantities[$index]) ? (int) $quantities[$index] : 1,
+                
+            ]; 
+        }
+    }
+
   
-      $ordered_items = [];
-      foreach ($products as $index => $product) {
-          $ordered_items[] = [
-              'product' => $product,
-              'quantity' => isset($quantities[$index]) ? (int) $quantities[$index] : 1
-          ];
-      }
-  
-      session([
+      session([ 
         'ordered_items' => $ordered_items,
+        'o_id' => $the_id
       ]);
       return response()->json(['success' => true]);
 
@@ -52,7 +59,26 @@ class AdminController extends Controller
     public function show_order_detail_page()
     {
       $ordered_items = session('ordered_items', []);
+      $order_id = session('o_id', null);
       return view('admin_order_detail', compact('ordered_items')); 
+    } 
+
+    public function delete_order(Request $request)
+    {
+        $orderId = $request->input('order_id'); 
+        $order = Order::find($orderId);
+    
+        if ($order) {  
+            $order->delete();
+            return response()->json(['success' => true]);
+        }
+       return response()->json(['success' => false, 'message' => 'Order not found.']);
     }
+
+    //Products
+    public function fetch_products_ajax(){
+        $products = Product::select('id', 'product_name', 'product_desc', 'product_price', 'product_img_link', 'category')->get();
+        return response()->json($products); 
+    } 
 } 
  
