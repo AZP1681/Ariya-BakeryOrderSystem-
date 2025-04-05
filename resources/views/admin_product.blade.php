@@ -36,6 +36,18 @@
 
         <div class="adp-table">
         <h1>All Products</h1>
+
+        <div class="search-bar-container">
+          <form action="{{ route('admin.product.search') }}" method="GET">
+            <input type="text" id="product-search" placeholder="Search Products..." class="search-input" 
+                name="search" 
+                value="{{ request('search') }}" 
+                onkeydown="if(event.key === 'Enter') this.form.submit();">
+          </form>
+          <button id="add-product-btn" class="add-btn" onclick="showProductAddForm()">+</button>
+        </div>
+
+
           <table class="table table-striped table-bordered" id="orders-table">
             <thead> 
               <tr> 
@@ -100,16 +112,16 @@
       @csrf 
 
       <label for="product-name">Product Name</label>
-      <input type="text" id="ed-product-name" name="name" required>
+      <input type="text" id="ad-product-name" name="name" required>
 
       <label for="product-description">Description</label>
-      <textarea id="ed-product-description" name="description" rows="4" required></textarea>
+      <textarea id="ad-product-description" name="description" rows="4" required></textarea>
 
       <label for="product-image">Product Image</label>
-      <input type="text" id="ed-product-image-link" name="product image url" required>
+      <input type="text" id="ad-product-image-link" name="product image url" required>
  
       <label  for="product-category">Category</label>
-      <select id="ed-product-category" name="category" required>
+      <select id="ad-product-category" name="category" required>
         <option value="breads" {{ request('type') == 'breads' ? 'selected' : '' }}>Breads</option>
         <option value="cakes" {{ request('type') == 'cakes' ? 'selected' : '' }}>Cakes</option>
         <option value="pastries" {{ request('type') == 'pastries' ? 'selected' : '' }}>Pastries</option>
@@ -117,10 +129,10 @@
       </select>
 
       <label for="product-price">Price (€)</label>
-      <input type="number" step="0.01" id="ed-product-price" name="price" required>
+      <input type="number" step="0.01" id="ad-product-price" name="price" required>
 
       <div class="product-add-actions">
-        <button type="submit" class="submit-btn" onclick="insertProduct()">Insert</button> 
+        <button type="submit" class="submit-btn" onclick="insert_product()">Insert</button> 
         <button type="button" class="cancel-btn" onclick="hideProductAddForm()">Cancel</button>
       </div>
     </form>
@@ -152,14 +164,15 @@
 
 
     function fetchProducts() {
-      fetch("{{ route('admin.products.fetch') }}")
-        .then(response => response.json())
+      fetch("{{ route('admin.products.fetch') }}")  // Ensure this points to the correct route
+        .then(response => response.json())  // Parse the response as JSON
         .then(data => {
-
+            
             data.sort((a, b) => a.id - b.id);
 
             let tableBody = document.getElementById("products-table-body");
-            tableBody.innerHTML = ""; 
+            tableBody.innerHTML = "";  
+
             data.forEach(product => {
                 tableBody.innerHTML += `
                   <tr class="product-tr"> 
@@ -183,10 +196,12 @@
                   </tr>   
                 `;  
             });   
-        });    
+        }) 
+        .catch(error => {
+            console.error("Error fetching products:", error);
+        }); 
     }
 
-    setInterval(fetchProducts, 12000); // Refresh every 20 seconds
 
 
 
@@ -320,8 +335,15 @@
     } 
 
     //Add product
-    function insert_product(name,desc,imglink,cate,price){
+    function insert_product(){
   
+      let name = document.getElementById('ad-product-name').value;
+      let desc = document.getElementById('ad-product-description').value; 
+      let price = document.getElementById('ad-product-price').value;
+      let imglink = document.getElementById('ad-product-image-link').value;
+      let cate = document.getElementById('ad-product-category').value;
+
+ 
       fetch("{{ route('admin.products.add') }}", {
         method: 'POST',
         headers: {

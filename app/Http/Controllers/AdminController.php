@@ -11,7 +11,15 @@ class AdminController extends Controller
 {
     public function fetch_products(){
         $products = Product::all();  
-        return view('admin_products', compact('products'));
+        return view('admin_product', compact('products'));
+    }
+ 
+    public function search_products(Request $request){
+        $search_txt = strtolower(str_replace(' ', '', $request->input('search')));
+        $products = Product::whereRaw("LOWER(REPLACE(product_name, ' ', '')) LIKE ?", ["%{$search_txt}%"])->get();
+    
+        return response()->json($products);  
+
     }
     
     public function fetch_orders_ajax(){
@@ -53,7 +61,7 @@ class AdminController extends Controller
         'o_id' => $the_id
       ]);
       return response()->json(['success' => true]);
-
+ 
     }
 
     public function show_order_detail_page()
