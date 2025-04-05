@@ -33,6 +33,7 @@ header {
   justify-content: center;
   align-items: center;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
+  z-index: 1000;
 }
 
 main {
@@ -68,6 +69,7 @@ main small {
   width: 100%;
   pointer-events: none;
 
+  z-index: 1000;
 
 }
 #nav-container .bg {
@@ -80,6 +82,8 @@ main small {
   opacity: 0;
   transition: .3s;
   background: #000;
+  z-index: 1000;
+
 }
 #nav-container:focus-within .bg {
   visibility: visible;
@@ -106,6 +110,8 @@ main small {
   margin-left: 25px;
   touch-action: manipulation;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+  z-index: 1000;
 }
 .icon-bar {
   display: block;
@@ -147,6 +153,8 @@ main small {
   transition: transform .3s;
   will-change: transform;
   contain: paint;
+  z-index: 1000;
+
 }
 
 #nav-content ul {
@@ -283,19 +291,19 @@ img {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 24px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;
   border-radius: 20px;
   cursor: pointer;
+  transition: all 0.3s ease;
+
 
 }
 .order-tr:hover{
   transform: scale(1.01);
   box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 12px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 1px;
-  transition: all 0.2s ease;
 
 }
 
 .order-tr:active{
   transform: scale(0.97);
   box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 12px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 1px;
-  transition: all 1s ease;
 
 }
 
@@ -368,7 +376,7 @@ img {
 }  
 .admin-cart-table th{  
   text-align: center;
-  font-size: clamp(16px,1.1vw,1.45rem);
+  font-size: clamp(15px,1.4vw,2rem);
   font-weight: 600; 
   color: #000000;
 }
@@ -526,13 +534,13 @@ img {
   outline: none; 
   border: none;
 
-  border-radius: 10px;
+  border-radius: 10px; 
   padding: clamp(6px,1vw,15px) 20px;
   
   color: white;
   font-size: clamp(16px,1.2vw,1.72rem); 
   font-weight: 100;
-  background: #ff304c; 
+  background: #b64e5c; 
   box-shadow: rgba(0, 0, 0, 0.15) 0px 8px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
 
   transition: all 0.3s ease;
@@ -621,14 +629,14 @@ img {
   transition: background-color 0.2s;
 }
 .cd-popup-container .cd-buttons li:first-child a {
-  background: #ff4453;
+  background: #b64e5c;
   border-radius: 0 0 0 .25em;
 }
 .no-touch .cd-popup-container .cd-buttons li:first-child a:hover {
   background-color: #fc8982;
 }
 .cd-popup-container .cd-buttons li:last-child a {
-  background: #b6bece;
+  background: #ccc;
   border-radius: 0 0 .25em 0;
 }
 .no-touch .cd-popup-container .cd-buttons li:last-child a:hover {
@@ -636,15 +644,16 @@ img {
 }
 .cd-popup-container .cd-popup-close {
   position: absolute;
-  top: 8px;
+  top: 8px; 
   right: 8px;
   width: 30px;
   height: 30px;
 }
 
 .cd-popup-container input{
-  width: 10%;
-  height: 40px;
+  width: 10%; 
+  min-width: 100px; 
+  height: 40px; 
   border-radius: 12px;
   background-color: #ffffff;
   color: #3f3f3fc9; 
@@ -657,6 +666,7 @@ img {
   text-align: center;
 
   margin-bottom: 20px;
+  box-sizing: border-box; 
 }
 
 .cd-popup-container .cd-popup-close::before, .cd-popup-container .cd-popup-close::after {
@@ -690,6 +700,340 @@ img {
   -o-transform: translateY(0);
   transform: translateY(0);
 }
+
+
+/*Products View*/
+/*------------------------*/
+
+.adp-table {
+  width: 98%; 
+  background: white; 
+  margin: 0;
+   
+}
+
+.adp-table h1{ 
+  align-self: center;
+  text-align: center;
+  margin-top: 35px; 
+  margin-bottom: 35px;
+}
+
+.adp-table th{  
+  font-family: "Bellota Text", sans-serif;
+  text-align: center;
+  
+  font-size: clamp(15px,1.3vw,2rem);
+  font-weight: 400;  
+  color: #000000;
+
+  border-bottom: 2px solid rgb(0, 0, 0); 
+  letter-spacing: 4px;
+}  
+
+.adp-table tbody{
+  text-align: center;
+} 
+
+.product-tr{
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 24px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+
+}
+.product-tr:hover{
+  transform: scale(1.01);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 12px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 1px;
+
+}
+
+.product-tr:active{
+  transform: scale(0.97);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 12px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 1px;
+
+}
+
+.adp-table td{
+  height: 8vw;
+
+  border-radius: 3px; 
+  font-weight: 500; 
+
+}
+
+.adp-img-container{
+  width: clamp(100px,10vw,1000px); 
+  height: clamp(120px,12vw,1000px);
+  overflow: hidden;
+  border-radius: 8px;
+}
+ 
+.adp-img-container img{
+  width: 100%;  
+  height: 100%; 
+  object-fit: cover;  
+  
+} 
+
+.adp-name{
+  font-size: clamp(10px,1.07vw,1.94rem);
+
+  text-align: center;
+  vertical-align: center; 
+  padding: 10px 8px; 
+  font-weight: 500; 
+  
+  width: 18vw; 
+  max-width: 800px;
+  
+}
+
+.adp-desc{
+  font-family: "Bellota Text", sans-serif;
+  font-size: clamp(6px,1vw,1.94rem);
+  text-align: start;
+  padding: 10px 8px;    
+  font-weight: 500;  
+  
+  width: clamp(200px, 40vw, 1020px);
+
+
+}
+
+.adp-price{
+  padding: 0px 20px;
+  color: #458d79;
+  font-family: "Bellota Text", sans-serif;
+  font-weight: 400;  
+  font-size: clamp(10px,1.24vw,2rem);
+
+
+  width: clamp(100px, 10vw, 300px);
+
+
+}
+
+.adp-cate{
+  padding: 0px 20px;
+  color: #b64e5c;
+  font-family: "Bellota Text", sans-serif;
+  font-weight: 400; 
+  font-size: clamp(10px,1.24vw,2rem);
+
+  width: clamp(100px, 10vw, 300px);
+} 
+  
+.adp-func{
+  padding: 0px 20px;
+  font-family: "Bellota Text", sans-serif;
+  font-weight: 400; 
+  font-size: clamp(10px,1.07vw,1.94rem);
+
+
+  width: clamp(20px, 8vw, 400px);
+ 
+}
+ 
+
+.adp-btn-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 20px; 
+   
+} 
+
+.adp-edit-btn{
+  background: #19805d;
+  border-radius: 10px;
+  color: #FFF;
+  text-align: center;
+  font-size: clamp(10px,1.20vw,2rem);
+  font-weight: 400;  
+  padding: 10px;
+  transition: background-color .2s; 
+  
+}
+
+.adp-delete-btn{
+  background: #b64e5c;
+  border-radius: 10px; 
+  color: #FFF;
+  text-align: center;
+  font-size: clamp(10px,1.20vw,2rem);
+  font-weight: 400; 
+  padding: 10px;
+  transition: background-color .2s;
+}
+
+.product-update-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none; /* Show with JS */
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.product-update-popup.is-visible {
+  display: flex;
+}
+
+.product-update-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  width: clamp(280px, 90vw, 500px); 
+  max-height: 90vh;
+  overflow-y: auto;
+  font-family: "Bellota Text", sans-serif;
+}
+
+.product-update-container h2 {
+  margin-bottom: 1rem;
+  color: #333;
+  text-align: center;
+}
+
+.product-update-container label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.product-update-container input,
+.product-update-container textarea,
+.product-update-container select {
+  width: 100%;
+  padding: 0.7rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.product-update-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+
+
+
+.product-add-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none; /* Show with JS */
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.product-add-popup.is-visible {
+  display: flex;
+}
+
+.product-add-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  width: clamp(280px, 90vw, 500px); 
+  max-height: 90vh;
+  overflow-y: auto;
+  font-family: "Bellota Text", sans-serif;
+}
+
+.product-add-container h2 {
+  margin-bottom: 1rem;
+  color: #333;
+  text-align: center;
+}
+
+.product-add-container label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.product-add-container input,
+.product-add-container textarea,
+.product-add-container select {
+  width: 100%;
+  padding: 0.7rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.product-add-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+
+.submit-btn,
+.cancel-btn {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.submit-btn {
+  background-color: #458d79;
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #ccc;
+  color: black;
+}
+
+
+
+@media (max-width: 500px) {
+  .product-update-container {
+    padding: 1rem;
+  }
+
+  .product-update-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  } 
+
+  .product-add-container {
+    padding: 1rem;
+  }
+
+  .product-add-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  } 
+
+}
+
+
 @media only screen and (min-width: 1170px) {
   .cd-popup-container {
     margin: 8em auto;
@@ -782,6 +1126,65 @@ img {
     font-size: clamp(12px,1.2vw,1.72rem); 
   }
 
+
+
+  .adp-table th{  
+    font-family: "Bellota Text", sans-serif;
+    text-align: center;
+    
+    font-size: clamp(10px,1.3vw,2rem);
+    letter-spacing: 2px;
+  }  
+  
+  .adp-img-container{
+    width: clamp(70px,10vw,1000px); 
+    height: clamp(90px,10vw,1000px);
+  } 
+  
+  
+  .adp-name{
+    font-size: clamp(4px,1.4vw,1.94rem);
+    width: 30vw; 
+    
+  }
+  
+  .adp-desc{
+    font-size: clamp(1px,1.5vw,1.94rem);
+    width: clamp(600px, 60vw, 1070px);
+  }
+  
+  .adp-price{
+    font-size: clamp(3px,2vw,2rem);
+    width: clamp(100px, 10vw, 300px);
+  
+  
+  }
+  
+  .adp-cate{
+    font-size: clamp(3px,2vw,2rem);
+    width: clamp(100px, 10vw, 300px);
+  } 
+    
+  .adp-func{
+    font-size: clamp(10px,1.07vw,1.94rem);
+    width: clamp(20px, 10vw, 400px);
+   
+  }
+  
+  
+  .adp-btn-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 10px; 
+     
+  } 
+  
+  .adp-id{
+    font-size: clamp(4px,1.4vw,1.94rem);
+
+
+  }
 }
 
 
@@ -860,6 +1263,7 @@ img {
     display: flex;
     align-content: center;
     justify-content: center;
+    margin-bottom: -60px;
 
 }  
 
@@ -872,7 +1276,6 @@ img {
     margin-left: 0px;
     margin-right: 0px; 
 
-    margin-bottom: -300px;
 }
 .ad-order-summary h2{
 
@@ -924,4 +1327,77 @@ img {
       width: 90vw;
     font-size: clamp(10px,0.8vw,1.92rem);
   }
+
+  .product-tr{
+    border-radius: 10px;
+  
+  }
+
+  .adp-table th{  
+    font-size: clamp(12px,1.5vw,2rem);
+    letter-spacing: 0px;
+  }  
+  
+  .adp-img-container{
+    width: clamp(50px,10vw,1000px); 
+    height: clamp(70px,10vw,1000px);
+  } 
+    
+  
+  .adp-name{
+    font-size: clamp(9px,2vw,1.94rem);
+    width: clamp(700px, 60vw, 1070px);
+    
+  }
+  
+  th.apd-desc-th, 
+  td.adp-desc {
+    display: none;
+  }
+  
+  .adp-price{
+    font-size: clamp(12px,2vw,2rem);
+    width: 2px; 
+  }
+  
+  .adp-cate{
+    font-size: clamp(9px,2vw,2rem);
+    width: clamp(100px, 10vw, 300px);
+  } 
+    
+  .adp-func{
+    font-size: clamp(10px,1.07vw,1.94rem);
+    width: clamp(4px, 10vw, 400px);
+   
+  }
+  
+  
+  .adp-btn-container{
+    gap: 2px;     
+  } 
+
+
+  .adp-edit-btn{
+    border-radius: 6px;
+    font-size: clamp(8px,1.24vw,2rem);
+    padding: 10px 6px;
+    
+  }
+  
+  .adp-delete-btn{
+    border-radius: 6px;
+    font-size: clamp(8px,1.24vw,2rem);
+    padding: 10px 6px;
+ 
+
+  }
+
+  .adp-id{
+    font-size: clamp(9px,2vw,1.94rem);
+
+  }
+  
 }
+
+
+/* For products  */

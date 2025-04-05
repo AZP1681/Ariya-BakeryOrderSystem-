@@ -48,5 +48,8 @@ Route::prefix('admin')->group(function () {
     // Route for AJAX polling (returns JSON)
     Route::get('/orders/data', [AdminController::class, 'fetch_orders_ajax'])->name('admin.orders.fetch');
     Route::get('/products/data', [AdminController::class, 'fetch_products_ajax'])->name('admin.products.fetch'); 
+    Route::post('/products/update', [AdminController::class, 'update_product'])->name('admin.products.update');  
+    Route::post('/products/delete', [AdminController::class, 'delete_product'])->name('admin.products.delete');
+    Route::post('/products/add', [AdminController::class, 'add_product'])->name('admin.products.add');
 });
  

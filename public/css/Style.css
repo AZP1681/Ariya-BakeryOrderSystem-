@@ -1326,7 +1326,7 @@
     text-shadow: 3px 3px #00000028; 
     color: #FFA600;    
 }
- 
+  
 
 
 .cart-color-box{
@@ -1444,6 +1444,7 @@
 .RightBoxes-Con{
     grid-area: right-boxes;
     width: auto;
+    margin-bottom: -60px;
 
 } 
 

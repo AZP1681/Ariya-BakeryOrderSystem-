@@ -16,7 +16,7 @@ class ProductController extends Controller
         $products = Product::all();  
         return view('order', compact('products'));
     }
-
+ 
     public function search(Request $request){
         $search_txt = strtolower(str_replace(' ', '', $request->input('search')));
         $products = Product::whereRaw("LOWER(REPLACE(product_name, ' ', '')) LIKE ?", ["%{$search_txt}%"])->get();

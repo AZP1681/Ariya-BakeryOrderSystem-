@@ -20,7 +20,7 @@
       </div> 
       <div id="nav-content" tabindex="0">
         <ul>
-          <li><a href="#0">Products</a></li>
+          <li><a href="{{ route('admin.products.view') }}">Products</a></li>
           <li><a href="{{ route('admin.orders.view') }}">Orders</a></li>
           <li><a href="#0">Customers</a></li>
           <li><a href="#0">Reviews</a></li>
@@ -81,7 +81,7 @@
                 `; 
             });
         });  
-    }
+    } 
 
     setInterval(fetchOrders, 12000); // Refresh every 20 seconds
 

@@ -80,5 +80,66 @@ class AdminController extends Controller
         $products = Product::select('id', 'product_name', 'product_desc', 'product_price', 'product_img_link', 'category')->get();
         return response()->json($products); 
     } 
+
+    public function delete_product(Request $request)
+    {
+        $productId = $request->input('product_id'); 
+        $product = Product::find($productId);
+    
+        if ($product) {  
+            $product->delete();
+            return response()->json(['success' => true]);
+        }
+       return response()->json(['success' => false, 'message' => 'Product not found.']);
+    } 
+
+    public function add_product(Request $request)
+    {
+        $request->validate([
+            'product_name' => 'required|string|max:255',
+            'product_desc' => 'required|string|max:255',
+            'product_price' => 'required|numeric',
+            'product_img_link' => 'required|string|max:255',
+            'category' => 'required|string|max:255', 
+        ]);
+    
+        $product = new Product();
+        $product->product_name = $request->input('product_name');
+        $product->product_desc = $request->input('product_desc');
+        $product->product_price = $request->input('product_price');
+        $product->product_img_link = $request->input('product_img_link');
+        $product->category = $request->input('category');
+        $product->save();
+    
+        return response()->json(['success' => true]); 
+    }
+
+
+    public function update_product(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|numeric',
+            'product_name' => 'required|string|max:255',
+            'product_desc' => 'required|string|max:255',
+            'product_price' => 'required|numeric',   
+            'product_img_link' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
+        ]); 
+    
+        $product = Product::find($request->input('product_id'));
+    
+        if ($product) {
+            $product->product_name = $request->input('product_name');
+            $product->product_desc = $request->input('product_desc');
+            $product->product_price = $request->input('product_price');
+            $product->product_img_link = $request->input('product_img_link');
+            $product->category = $request->input('category');
+            $product->save();
+    
+            return response()->json(['success' => true]);
+        }
+    
+        return response()->json(['success' => false, 'message' => 'Product not found.']);
+    }
 } 
  
