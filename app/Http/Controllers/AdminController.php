@@ -9,23 +9,20 @@ use App\Models\Cart;
 
 class AdminController extends Controller
 {
-    public function fetch_products(){
-        $products = Product::all();  
-        return view('admin_product', compact('products'));
-    }
- 
-    public function search_products(Request $request){
-        $search_txt = strtolower(str_replace(' ', '', $request->input('search')));
-        $products = Product::whereRaw("LOWER(REPLACE(product_name, ' ', '')) LIKE ?", ["%{$search_txt}%"])->get();
-    
-        return response()->json($products);  
 
-    }
-    
+     
     public function fetch_orders_ajax(){
         $orders = Order::select('id', 'name', 'phone', 'address', 'total_amount', 'ordered_products', 'ordered_quantity')->get();
         return response()->json($orders);
     } 
+
+    
+    public function search_orders(Request $request){
+        $search_txt = strtolower(str_replace(' ', '', $request->input('search')));
+        $orders = Order::whereRaw("LOWER(REPLACE(name, ' ', '')) LIKE ?", ["%{$search_txt}%"])->get();
+     
+        return response()->json($orders);    
+    }
 
     public function fetch_order_detail(Request $request){
         $request->validate([
@@ -83,12 +80,29 @@ class AdminController extends Controller
        return response()->json(['success' => false, 'message' => 'Order not found.']);
     }
 
+
+
+
+
+
+
+
+
+
+
     //Products
     public function fetch_products_ajax(){
         $products = Product::select('id', 'product_name', 'product_desc', 'product_price', 'product_img_link', 'category')->get();
         return response()->json($products); 
     } 
+    
+    public function search_products(Request $request){
+        $search_txt = strtolower(str_replace(' ', '', $request->input('search')));
+        $products = Product::whereRaw("LOWER(REPLACE(product_name, ' ', '')) LIKE ?", ["%{$search_txt}%"])->get();
+     
+        return response()->json($products); 
 
+    }
     public function delete_product(Request $request)
     {
         $productId = $request->input('product_id'); 

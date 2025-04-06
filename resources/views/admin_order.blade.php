@@ -33,9 +33,17 @@
       <div class="content">
         <div class="ao-table">
         <h1>Arrived Orders</h1>
+        
+        <div class="search-bar-container">
+          <form onsubmit="searchOrders(event); return false;"> 
+            <input type="text" id="order-search" placeholder="Search Orders by Name..." class="search-input"
+                   name="search" onkeydown="if (event.key === 'Enter') { event.preventDefault(); searchOrders(event); }">
+          </form> 
+        </div>
+
           <table class="table table-striped table-bordered" id="orders-table">
             <thead>
-              <tr>
+              <tr> 
                 <th>Order ID</th>
                 <th>Customer Name</th>
                 <th>Phone</th> 
@@ -67,6 +75,9 @@
       fetch("{{ route('admin.orders.fetch') }}")
         .then(response => response.json())
         .then(data => {
+
+            data.sort((a, b) => a.id - b.id);
+
             let tableBody = document.getElementById("orders-table-body");
             tableBody.innerHTML = ""; 
             data.forEach(order => {
@@ -81,9 +92,56 @@
                 `; 
             });
         });  
+    }  
+
+
+    function searchOrders(event) {
+      event.preventDefault();  
+      const searchValue = document.getElementById('order-search').value.trim();
+     
+      if (searchValue === "") {
+          console.log("Search field is empty.");
+          fetchOrders();  
+          return;  
+      }
+
+
+      fetch(`{{ route('admin.order.search') }}?search=${encodeURIComponent(searchValue)}`)
+        .then(response => response.json())
+        .then(data => { 
+            
+          data.sort((a, b) => a.id - b.id);
+
+          let tableBody = document.getElementById("orders-table-body");
+          tableBody.innerHTML = ""; 
+
+          if (data.length > 0) {
+          data.forEach(order => {
+              tableBody.innerHTML += `
+                <tr class="order-tr" onClick="fetchOrderDetail('${order.ordered_products}', '${order.ordered_quantity}', '${order.id}')"> 
+                      <td>${order.id}</td>
+                      <td>${order.name}</td> 
+                      <td>${order.phone}</td>
+                      <td>${order.address}</td> 
+                      <td>${order.total_amount}</td>
+                </tr>  
+              `; 
+          });
+          }else {
+            tableBody.innerHTML = `
+              <tr>
+                <td colspan="5" class="no-results">No results found for "${searchValue}"</td>
+              </tr>   
+            `;
+          }
+
+        }) 
+        .catch(error => {
+            console.error("Error fetching products:", error);
+        }); 
     } 
 
-    setInterval(fetchOrders, 12000); // Refresh every 20 seconds
+    setInterval(fetchOrders, 12000);
 
 
     function fetchOrderDetail(orderedProducts, orderedQuantity, orderId) {
@@ -107,6 +165,11 @@
       .catch(error => console.error("Error fetching order details:", error));
 
     }
+
+
+
+
+
 
 </script>
 

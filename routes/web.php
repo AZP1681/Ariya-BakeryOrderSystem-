@@ -33,8 +33,8 @@ Route::post('/insert-order', [OrderController::class, 'InsertOrder'])->name('ins
 Route::prefix('admin')->group(function () {
 
     Route::get('/orders', function () {
-        return view('admin_order');   
-    })->name('admin.orders.view');
+        return view('admin_order');    
+    })->name('admin.orders.view'); 
 
     Route::get('/products', function () {
         return view('admin_product');  
@@ -47,6 +47,7 @@ Route::prefix('admin')->group(function () {
  
     // Route for AJAX polling (returns JSON)
     Route::get('/orders/data', [AdminController::class, 'fetch_orders_ajax'])->name('admin.orders.fetch');
+    Route::get('/orders/search', [AdminController::class, 'search_orders'])->name('admin.order.search');
     Route::get('/products/data', [AdminController::class, 'fetch_products_ajax'])->name('admin.products.fetch'); 
     Route::get('/products/search', [AdminController::class, 'search_products'])->name('admin.product.search');
 

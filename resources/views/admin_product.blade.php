@@ -30,7 +30,7 @@
     </div>  
   
     <main>
-      
+        
       <div class="content">
 
 
@@ -38,11 +38,9 @@
         <h1>All Products</h1>
 
         <div class="search-bar-container">
-          <form action="{{ route('admin.product.search') }}" method="GET">
-            <input type="text" id="product-search" placeholder="Search Products..." class="search-input" 
-                name="search" 
-                value="{{ request('search') }}" 
-                onkeydown="if(event.key === 'Enter') this.form.submit();">
+          <form onsubmit="searchProducts(event); return false;">
+            <input type="text" id="product-search" placeholder="Search Products..." class="search-input"
+                   name="search" onkeydown="if (event.key === 'Enter') { event.preventDefault(); searchProducts(event); }">
           </form>
           <button id="add-product-btn" class="add-btn" onclick="showProductAddForm()">+</button>
         </div>
@@ -96,7 +94,7 @@
 
       <label for="product-price">Price (€)</label>
       <input type="number" step="0.01" id="ed-product-price" name="price" required>
-
+ 
       <div class="product-update-actions">
         <button type="submit" class="submit-btn" onclick="editProduct()">Update</button>
         <button type="button" class="cancel-btn" onclick="hideProductUpdateForm()">Cancel</button>
@@ -157,6 +155,8 @@
 
 @section('scripts') 
 <script>
+
+
    window.onload = function() {
     fetchProducts();
     
@@ -164,8 +164,9 @@
 
 
     function fetchProducts() {
-      fetch("{{ route('admin.products.fetch') }}")  // Ensure this points to the correct route
-        .then(response => response.json())  // Parse the response as JSON
+
+      fetch("{{ route('admin.products.fetch') }}") 
+        .then(response => response.json())
         .then(data => {
             
             data.sort((a, b) => a.id - b.id);
@@ -202,10 +203,56 @@
         }); 
     }
 
+    function searchProducts(event) {
+     
+      event.preventDefault();  
+      const searchValue = document.getElementById('product-search').value.trim();
+    
+      if (searchValue === "") {
+          console.log("Search field is empty.");
+          fetchProducts();  
+          return;  
+      }
+      
+      fetch(`{{ route('admin.product.search') }}?search=${encodeURIComponent(searchValue)}`)
+        .then(response => response.json())  
+        .then(data => {
+            data.sort((a, b) => a.id - b.id);  
+    
+            let tableBody = document.getElementById("products-table-body");
+            tableBody.innerHTML = ""; 
+    
+            if (data.length > 0) {
+                data.forEach(product => {
+                    tableBody.innerHTML += `
+                        <tr class="product-tr">
+                            <td><div class="adp-img-container"><img src="${product.product_img_link}" alt=""></div></td>
+                            <td class="adp-id">${product.id}</td>
+                            <td class="adp-name">${product.product_name}</td>
+                            <td class="adp-desc">${product.product_desc}</td>
+                            <td class="adp-price">€${parseFloat(product.product_price).toFixed(2)}</td>
+                            <td class="adp-cate">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</td>
+                            <td class="adp-func">
+                                <div class="adp-btn-container">
+                                    <a onclick="showProductUpdateForm(${product.id}, '${product.product_name}', '${product.product_desc}', '${product.product_img_link}', '${product.product_price}', '${product.category}')" class="adp-edit-btn">Edit</a>
+                                    <a onclick="showPopup(); setSelectedProductId(${product.id})" class="adp-delete-btn">Delete</a>
+                                </div>
+                            </td>
+                        </tr> 
+                    `;
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='7'>No products found.</td></tr>";  // If no products match the search.
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching searched products:", error);
+        });
+      }
 
 
 
-  
+    //CRUD Functions
     let selectedProductId = null;
 
     function showProductUpdateForm(id, name, description, imgUrl, price, category) {
@@ -302,6 +349,11 @@
             closePopup();
         }
     }); 
+
+    let searchInput = document.getElementById("product-search");
+    if (searchInput.innerHTML === ""){
+      fetchProducts();
+    } 
   }); 
 
     function setSelectedProductId(id) {
@@ -318,7 +370,7 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ order_id: order_id })
+                body: JSON.stringify({ product_id: product_id })
             })
             .then(response => response.json())  
             .then(data => {
@@ -357,7 +409,7 @@
             product_img_link: imglink,  
             category: cate 
         }) 
-      })
+      }) 
       .then(response => response.json())  
       .then(data => {
         window.location.href = "{{ route('admin.products.view') }}"; 
