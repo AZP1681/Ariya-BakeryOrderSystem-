@@ -31,6 +31,9 @@ Route::post('/insert-order', [OrderController::class, 'InsertOrder'])->name('ins
   
 // Admin Routes
 Route::prefix('admin')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('admin.products.view');
+    });
 
     Route::get('/orders', function () {
         return view('admin_order');    
@@ -53,6 +56,6 @@ Route::prefix('admin')->group(function () {
 
     Route::post('/products/update', [AdminController::class, 'update_product'])->name('admin.products.update');  
     Route::post('/products/delete', [AdminController::class, 'delete_product'])->name('admin.products.delete');
-    Route::post('/products/add', [AdminController::class, 'add_product'])->name('admin.products.add');
+    Route::post('/products/add', [AdminController::class, 'add_product'])->name('admin.products.add'); 
 });
  
