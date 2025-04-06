@@ -19,7 +19,7 @@
     <h3>Order Cart</h3> 
     <div class="cart-color-box"></div>
  </div> 
-
+ 
  <div class="scrollable-table">
     <table class="cart-table">
         <thead> 
@@ -33,48 +33,48 @@
         </thead>
         <tbody>
 
-          @foreach ($products as $product)
+          @foreach ($products as $product) 
             <tr>
               <td class="cp-img">  
                   <div class="cp-img-container">
                     <img src="{{$product->product_img_link}}" alt="">
                   </div>
               </td> 
-              <td class="cp-name">{{ $product->product_name }}</td>
-              <td class="cp-price">€{{ number_format($product->product_price, 2) }}</td>
+              <td class="cp-name" id="cp_name_{{$product->id}}">{{ $product->product_name }}</td>
+              <td class="cp-price" id="cp_price_{{$product->id}}">€{{ number_format($product->product_price, 2) }}</td>
               <td>
-                  <input type="number" name="quantity" class="quantity-input" value="1">
-              </td>
-              <td class="cp-total"></td>
+                  <input id="cp_quantity_input_{{$product->id}}" type="number" name="quantity" class="quantity-input" value="{{session('cart')[$product->id] ?? 1}}"  onchange="quantity_change({{$product->id}}) ">
+              </td> 
+              <td id="cp_total_{{$product->id}}" class="cp-total"></td> 
             </tr> 
-          @endforeach 
- 
+          @endforeach   
+  
         </tbody>
     </table>  
  </div>  
 
-<div class="RightBoxes-Con">
+<div class="RightBoxes-Con"> 
 
     <div class="order-summary" id="ordersumbox"> 
         <h2>Order Summary</h2>
 
         <div class="amount-couple">
              <h1>Delivery Fees</h1>   
-             <p>$4.00</p>
+             <p id="deli_fee_txt">€4.00</p>
         </div>
 
         <div class="amount-couple">
              <h1>Taxes</h1>  
-              <p>$2.00</p>
+              <p id="tax_txt">€1.20</p>
         </div>
 
-        <div class="amount-couple">
+        <div class="amount-couple"> 
              <h1>Total Amount</h1>   
-             <p>$18.00</p>
+             <p id="order_total_txt">$0</p>
         </div>
 
         <button class="check-out-btn">Check Out!</button>
-    </div> 
+    </div>  
     
     <div class="check-out" id="checkoutbox"> 
         <h2>Check Out</h2>
@@ -105,10 +105,10 @@
          <input type="text" name="name-on-card" class="name-on-card-input" id="creditpay-object" placeholder="Name on Card">
       
          <div class="co-btn-container">
-            <button class="back-to-ordersum-btn">&#x21e0;</button>
-            <button class="send-order-btn">Send Order</button>
+            <button class="back-to-ordersum-btn">&#x21e0;</button> 
+            <button class="send-order-btn" onclick="sendOrder()" >Send Order</button>
          </div>
-    </div>
+    </div> 
     
     
 </div>
@@ -132,7 +132,7 @@
             let ordersumBox = document.getElementById("ordersumbox");
         
             checkoutBox.style.display = "none";
-            ordersumBox.style.display = "flex";
+            ordersumBox.style.display = "flex"; 
         }
 
         document.querySelector(".check-out-btn").addEventListener("click", showCheckout);
@@ -167,30 +167,160 @@
             });
         } 
 
-
         document.addEventListener('DOMContentLoaded', () => {
           
           const cardInputs = document.querySelectorAll('.card-num-input, .expire-date-input, .name-on-card-input');
           let cod_radio = document.getElementById('cod');
           cod_radio.checked = true;
-          cardInputs.forEach(input => {
+          cardInputs.forEach(input => { 
             input.style.display = "none";
-          });
+          }); 
 
           let checkoutBox = document.getElementById("checkoutbox"); 
-          let ordersumBox = document.getElementById("ordersumbox");
+          let ordersumBox = document.getElementById("ordersumbox"); 
         
             checkoutBox.style.display = "none";  
-            ordersumBox.style.display = "flex";
-
-
-
+            ordersumBox.style.display = "flex";  
           
-
-
+          //twat total and order sum on start
+          @foreach ($products as $product)
+          quantity_change({{$product->id}});
+          @endforeach 
+          
         });
 
 
-    </script>
+ 
+        //Cart Quantity and Sum Logics
+        //------------------------------------------------------------------------------------------------------
+        let products_total = 0;
 
-@endsection
+        function quantity_change(product_id){
+
+            let price_txt = document.getElementById('cp_price_' + product_id);
+            let total_txt = document.getElementById('cp_total_' + product_id);
+            let quantity_input = document.getElementById('cp_quantity_input_' + product_id);
+      
+            let price = parseFloat(price_txt.innerText.replace('€', ''));
+            let quantity_value = parseInt(quantity_input.value, 10);
+
+            if (quantity_value < 1) {
+                alert("Quantity must be at least 1");
+                this.value = 1;
+                quantity_value = 1; 
+            }
+               
+            let total = 0; 
+            total = price * quantity_value; 
+            console.log(total); 
+            total_txt.innerText = '€' + total.toFixed(2); 
+
+            //BE laravel storage update
+            updateQuantity(product_id, quantity_value); 
+
+            //update the order summary total  
+            calculate_products_total();
+        }   
+
+        function calculate_products_total(){
+            products_total = 0;
+            let each_total_txt = document.querySelectorAll('.cp-total');
+            each_total_txt.forEach(total_txt => { 
+                let ep_total = parseFloat(total_txt.innerText.replace('€', '')) || 0;
+                products_total += ep_total;
+            }); 
+            
+            
+            calculate_order_summary();
+        }
+
+        function calculate_order_summary(){
+           
+            let tax_txt = document.getElementById('tax_txt');
+            let deli_txt = document.getElementById('deli_fee_txt');
+            let all_total = document.getElementById('order_total_txt'); 
+            
+            let delivery_fees = parseFloat(deli_txt.innerText.replace('€', '')) || 0;
+            let taxes = parseFloat(tax_txt.innerText.replace('€', '')) || 0;   
+
+            let order_total = products_total + delivery_fees + taxes; 
+            all_total.innerText = '€' + order_total.toFixed(2);    
+        }
+        
+        function updateQuantity(product_id, quantity) {
+        fetch('/cart/update-quantity', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                product_id: product_id, 
+                quantity: quantity
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Quantity Updated:", data.cart);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+
+    //Sending order data to the server
+    function sendOrder(){
+        
+        let name = document.querySelector('.name-input').value;
+        let phone = document.querySelector('.phone-input').value;
+        let address = document.querySelector('.address-input').value;
+        let district = document.querySelector('.district-input').value;
+        let card_num = document.querySelector('.card-num-input').value;
+        let expiration_date = document.querySelector('.expire-date-input').value;
+        let name_on_card = document.querySelector('.name-on-card-input').value; 
+
+        let order_total = document.getElementById('order_total_txt').innerText;
+        order_total = parseFloat(order_total.replace('€', '').trim());
+
+
+        let pay_m = document.getElementById("credit").checked ? 1 : 0;
+
+        if(name == "" || phone == "" || address == "" || district == ""){
+            alert("Please fill all the fields");
+            return;
+        } 
+
+        if(pay_m == 1){
+            if(card_num == "" || expiration_date == "" || name_on_card == ""){
+                alert("Please fill all the fields");
+                return;
+            }
+        }  
+        fetch('/insert-order', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                name: name,
+                phone: phone,
+                address: address,
+                district: district, 
+                total_amount: order_total, 
+                pay_method: pay_m,
+                card_num: card_num, 
+                expire_date: expiration_date, 
+                card_name: name_on_card, 
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Order Sent:");
+            alert("The Order has been sent to the database with name " + name + " and total amount of " + order_total + ". Please note that this is not a real cafe, but rather a demo project. Thank you for your testing.");
+        })
+        .catch(error => console.error('Error:', error)); 
+    }
+         
+    </script> 
+
+@endsection    

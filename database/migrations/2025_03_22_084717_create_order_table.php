@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('card_num')->nullable(); 
             $table->string('expire_date')->nullable(); 
             $table->string('card_name')->nullable();  
-            $table->timestamps();
+            $table->timestamps(); 
         });
     }
 
