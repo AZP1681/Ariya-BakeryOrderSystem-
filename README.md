@@ -62,7 +62,7 @@ A small single project ordering system for Bakery with:
 
 --------------------------------------------------------------
 
-## Accessing Staff(Admin) Side ##
+## ⚡ Accessing Staff(Admin) Side ##
 - go to /admin
 - *example: 126.104.x.x/admin || localhost/admin*
 
@@ -72,10 +72,3 @@ A small single project ordering system for Bakery with:
 **View my salon project, which has account system and seperate admin-management desktop app:**
 - https://github.com/AZP1681/Forsi-SalonBooking-Adminstration-DEMO-
 
-
-## ⚡ Accessing The Full Source Code
-
-!!!! ** Request Access for source codes ** !!!!
- - Email: ayzune.lovmusic@gmail.com
- - Phone: +95-09960084000, +95-09758186711
- - *This project is considered as a private property(except for the royalties-free images used). Thus, all rights are reserved and accessibility has been limited.*
