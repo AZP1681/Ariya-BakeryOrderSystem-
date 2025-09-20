@@ -1,30 +1,26 @@
-
 # Ariya - Bakery&Cafe Order System
 
 Aesthetic landing page & Ordering System for a BakeryCafe – A full-stack portfolio project I built entirely by myself, from design to database.
 Client-side(Website) to order and Admin-side(Website) to manage.
 
-* Customer Website
+### Customer Website
+| Home | Home 2 |
+|------|--------|
+| ![Home](./preview-images/Client%28Website%29/1.%20home.PNG) | ![Home2](./preview-images/Client%28Website%29/2.%20home.PNG) 
 
-  ![Home](./preview-images/Client%28Website%29/1.%20home.PNG)
+| Order | Cart |
+|-------|------|
+| ![Order](./preview-images/Client%28Website%29/3.%20Order.PNG) | ![Cart](./preview-images/Client%28Website%29/5.%20Cart.PNG) |
 
-  ![Home2](./preview-images/Client%28Website%29/2.%20home.PNG)
+### Staff(Admin) Website
+| Foods View | Edit Food |
+|-------------|---------|
+| ![Home](./preview-images/Staff%28Website%29/1.%20StaffFoodsView.PNG) | ![FoodEdit](./preview-images/Staff%28Website%29/2.%20StaffFoodEdit.PNG) |
 
-  ![Order](./preview-images/Client%28Website%29/3.%20Order.PNG)
+|Orders View |
+|------------|
+|![OrderViews](./preview-images/Staff%28Website%29/4.%20StaffOrdersView.PNG)  
 
-  ![Cart](./preview-images/Client%28Website%29/5.%20Cart.PNG)
-  
-
-* Staff Website 
-
-  ![Home](./preview-images/Staff%28Website%29/1.%20StaffFoodsView.PNG)
-
-  ![FoodEdit](./preview-images/Staff%28Website%29/2.%20StaffFoodEdit.PNG)
-  
-  ![OrderViews](./preview-images/Staff%28Website%29/4.%20StaffOrdersView.PNG)
-
-  ![Contact](./preview-images/Staff%28Website%29/6.%20Contact.PNG)
-  
   
 
    
@@ -50,7 +46,7 @@ A small single project ordering system for Bakery with:
 
  {<--Website-->}
   - Customer Order Multiple Foods (real-time price calculation).
-  - Customer can manage their order in Cart View (auantity & Deletation).
+  - Customer can manage their order in Cart View (Quantity & remove).
   - Customer fills their contacts, address and informations safely to make an appointment (no account system yet).
 
  {<--Admin's Website-->}
@@ -65,6 +61,16 @@ A small single project ordering system for Bakery with:
 - Blade + CSS
 
 --------------------------------------------------------------
+
+## Accessing Staff(Admin) Side ##
+- go to /admin
+- *example: 126.104.x.x/admin || localhost/admin*
+
+## ! Important ! ##
+**Account system and seperate admin side haven't added yet, since this project is designed to have minimal backend**
+
+**View my salon project, which has account system and seperate admin-management desktop app:**
+- https://github.com/AZP1681/Forsi-SalonBooking-Adminstration-DEMO-
 
 
 ## ⚡ Accessing The Full Source Code
