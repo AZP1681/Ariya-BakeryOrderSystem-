@@ -1047,7 +1047,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     
-    background: #FF9D00 url("/Images/angle-down-solid.svg") no-repeat;
+    background: #FF9D00 url("/images/angle-down-solid.svg") no-repeat;
     background-position: calc(100% - 90px) center;
     background-size: 50px;
  
