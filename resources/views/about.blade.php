@@ -17,7 +17,7 @@
  
 
 <div class="abt-cont-image-container">
-    <img src="\Images\bakes_counter-graded.jpg" alt=""> 
+    <img src="/images/bakes_counter-graded.jpg" alt=""> 
     <h3>About Us</h3>  
     <h1>A cozy bakery & café in Prague offering high-quality pastries, breads, and drinks made with the finest ingredients.</h1>
 </div>
@@ -26,7 +26,7 @@
      
     <div class="abt-img-con-wrapper">
       <div class="abt-img-con">
-        <img src="\Images\tablefillwithcakes.jpg" alt="Baked Goods">
+        <img src="/images/tablefillwithcakes.jpg" alt="Baked Goods">
       </div>
     </div> 
 

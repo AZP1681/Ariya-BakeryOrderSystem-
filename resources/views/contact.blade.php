@@ -17,7 +17,7 @@
 
 
 <div class="the-contact-image-container">
-    <img src="\Images\caffeeandtables_graded.jpg" alt=""> 
+    <img src="/images/caffeeandtables_graded.jpg" alt=""> 
     <h3>Reach Out Anytime!</h3>  
 
     <h1>
@@ -30,7 +30,7 @@
       
     <div class="cont-img-con-wrapper">
       <div class="cont-img-con">
-        <img src="\Images\outside.jpg">
+        <img src="/images/outside.jpg">
       </div>
     </div> 
 
